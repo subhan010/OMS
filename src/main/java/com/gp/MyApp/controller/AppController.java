@@ -1,5 +1,6 @@
 package com.gp.MyApp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -83,6 +84,11 @@ public class AppController {
 			
 		    
 		    pubemail=cemail;
+		    if(csi.getCustomer(cemail)==null)
+		    {
+		    	pubemail=null;
+		    	return "No user found";
+		    }
 		   
 			return "Logged in successfull";
 			
@@ -101,7 +107,11 @@ public class AppController {
 		@GetMapping("/order")
 		public List<Orders> getOrder()
 		{
-		
+		    if(pubemail==null)
+		    {
+		    	return new ArrayList<>();
+		    }
+		    
 			return osi.getOrder(pubemail);
 		}
 		///add customer information to database
@@ -110,6 +120,11 @@ public class AppController {
 		{
 			//cbsi.setCashback();
 			System.out.println(pubemail);
+			if(pubemail==null)
+			{
+				System.out.println("user not logged in");
+				return ord;
+			}
 			return osi.setOrder(pubemail,ord);
 		}
 		
